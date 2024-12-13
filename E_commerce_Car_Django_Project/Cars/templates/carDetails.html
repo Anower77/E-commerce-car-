@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <section class="container-fluid">
+        <div class="row g-2 mt-5">
+            <div class="col-12 col-md-6">
+                <img src="{{ data.image.url }}" alt="car" class="img-fluid rounded">
+            </div>
+            <div class="col-12">
+               
+                <h3>
+                    Model Name: {{ data.title }} <br><br>
+                    Brand: {{ data.brand.name }} <br><br>
+                    Color: {{ data.color }} <br><br>
+                    Price: {{ data.price }} <br><br>
+                    Available quantity: {{ data.quantity }} <br> <br>
+                </h3>
+            
+               
+                <h3>Description</h3>
+                <div class="accordion-body">{{ data.description }}</div>
+                <div class="mt-5">
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url "car_detail" data.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-warning">Order now</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url "login" %}">
+                            <button class="btn btn-warning">Login to order</button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <h3 class="text-center">Total Comment : {{ total_comment }}</h3>
+
+
+        <div class="my-3">
+                {% for cmt in comments %}
+                    <div class="border p-3 my-4">
+                        <h5>{{ cmt.name }}</h5>
+                        <small>{{ cmt.timestamp }}</small>
+                        <p>{{ cmt.body }}</p>
+                    </div>
+                {% endfor %}
+        </div>
+
+
+            <section class="container">
+                <form method="post" action="{% url "comment" data.id %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="btn btn-warning">comment</button>
+                </form>
+                
+            </section>
+        </div>
+    </section>
+{% endblock content %}

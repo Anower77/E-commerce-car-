@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <main>
+        <section class="container">
+            <div class="row align-items-center mt-5">
+                <div class="col-12 col-md-6">
+                    <h2 class="fw-bold">Lorem ipsum dolor sit amet consectetur</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat magnam nostrum perferendis harum saepe asperiores optio velit aut consectetur, eos repellendus iusto dolorem eius tenetur provident distinctio commodi aliquid molestias.
+                    </p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <img src="{% static "img/car2.jpg" %}" class="d-block w-100" alt="...">
+                </div>
+            </div>
+            <h3 class="py-5 my-5">All cars</h3>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4>Total cars: {{ data | length }}</h4>
+                </div>
+                <div>
+                    <p>Filter All brand</p>
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="radio"
+                               name="flexRadioDefault"
+                               id="all">
+                        <label class="form-check-label" for="all">
+                            <a class="text-dark" href="{% url "homePage" %}">All brands</a>
+                        </label>
+                    </div>
+                    {% for brand in brands %}
+                        <div class="form-check text-dark">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="flexRadioDefault"
+                                   id="{{ brand.name }}">
+                            <label class="form-check-label" for="{{ brand.name }}">
+                                <a class="text-dark" href="{% url "brand_filter" brand.id %}">{{ brand.name }}</a>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row mt-5 g-3">
+                {% for car in data %}
+                    <div class="col-12 col-md-4">
+                        <div class="card">
+                            <img src="{{ car.image.url }}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ car.title }}</h5>
+                                <p class="mb-0">
+                                    Price: ${{ car.price }}
+                                </p>
+                                <p>
+                                    Brand: {{ car.brand.name }}
+                                </p>
+                                <p class="card-text">{{ car.description|truncatewords:15 }}</p>
+                                <a href="{% url "car_detail" car.id %}" class="btn btn-info">View details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+{% endblock content %}
+
+
+
+
